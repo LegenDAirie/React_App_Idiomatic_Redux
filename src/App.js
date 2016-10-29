@@ -1,5 +1,7 @@
 import React from 'react'
-import FilterLink from './filterLink'
+import TodoList from './TodoList'
+import AddTodo from './AddTodo'
+import Footer from './Footer'
 
 var id = 0
 
@@ -21,79 +23,39 @@ const getVisibleTodos = (visibilityFilter, todos) => {
 }
 
 
-const App = React.createClass({
+const App = ({ dispatch, todos, visibilityFilter }) => {
 
-  render () {
-    const { dispatch, todos, visibilityFilter } = this.props
     const visibleTodos = getVisibleTodos(visibilityFilter, todos)
 
     return (
       <div>
-        <input ref={ node => {
-            this.input = node
-          } }
+
+        <AddTodo
+          onAddClick={ text => {
+            dispatch(
+              { type: 'ADD_TODO'
+              , text
+              , id: id++
+              }
+            )
+          }}
         />
 
-        <button onClick={ () => {
-          dispatch(
-            { type: 'ADD_TODO'
-            , text: this.input.value
-            , id: id++
-            }
-          )
-          this.input.value = ''
-        }}>
-          Add Todo
-        </button>
-
-        <lu>
-          { visibleTodos.map( todo => {
-            return (
-              <li key={ todo.id }
-                style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
-                onClick={ () => {
-                  console.log('dispatching toggle todo')
-                  dispatch(
-                    { type: 'TOGGLE_TODO'
-                    , id: todo.id
-                    }
-                  )
-                }}
-              >
-                { todo.text }
-              </li>
+        <TodoList todos={ visibleTodos }
+          onTodoClick={ id => {
+            dispatch(
+              { type: 'TOGGLE_TODO'
+              , id
+              }
             )
-          } )}
-        </lu>
-        <p>
-          Show:
-          {' '}
-          <FilterLink filter="SHOW_ALL"
-            dispatch={ dispatch }
-            currentFilter={ visibilityFilter }
-          >
-            All
-          </FilterLink>
-          {', '}
-          <FilterLink filter="ACTIVE"
-            dispatch={ dispatch }
-            currentFilter={ visibilityFilter }
-          >
-            Active
-          </FilterLink>
-          {', '}
-          <FilterLink filter="COMPLETED"
-            dispatch={ dispatch }
-            currentFilter={ visibilityFilter }
-          >
-            Completed
-          </FilterLink>
-        </p>
+          }}
+        />
+
+      <Footer />
 
 
       </div>
     )
-  }
-})
+}
 
 export default App
