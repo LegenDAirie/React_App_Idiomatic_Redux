@@ -8,7 +8,7 @@ const store = createStore(todoAppReducer)
 
 const render = () => {
   ReactDOM.render(
-    <App todos={ store.getState().todos }
+    <App { ...store.getState() }
       dispatch={ store.dispatch }
     />,
     document.getElementById('root')
