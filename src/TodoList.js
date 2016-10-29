@@ -1,5 +1,25 @@
 import React from 'react'
 import Todo from './Todo'
+import store from './store'
+
+
+const getVisibleTodos = (visibilityFilter, todos) => {
+  switch (visibilityFilter) {
+    case 'SHOW_ALL':
+      return todos
+
+    case 'ACTIVE':
+      return todos.filter( todo => !todo.completed)
+
+    case 'COMPLETED':
+      return todos.filter( todo => todo.completed)
+
+    default:
+      return todos
+  }
+}
+
+
 
 const TodoList = ({ todos, onTodoClick }) => (
   <ul>
@@ -13,4 +33,36 @@ const TodoList = ({ todos, onTodoClick }) => (
   </ul>
 )
 
-export default TodoList
+const VisibleTodoList = React.createClass({
+
+  componentDidMount () {
+    this.unsubscribe = store.subscribe( () => {
+      this.forceUpdate()
+    })
+  },
+
+  componentWillUnmount () {
+    this.unsubscribe()
+  },
+
+  render () {
+    const state = store.getState()
+
+    return (
+      <TodoList
+        todos={ getVisibleTodos(state.visibilityFilter, state.todos) }
+        onTodoClick={ id => {
+          store.dispatch(
+            { type: 'TOGGLE_TODO'
+            , id
+            }
+          )
+        }}
+      >
+
+      </TodoList>
+    )
+  }
+})
+
+export default VisibleTodoList
