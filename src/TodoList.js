@@ -34,19 +34,15 @@ const TodoList = ({ todos, onTodoClick }) => (
   </ul>
 )
 
-const mapStateToProps = state => {
-  return {
-    todos: getVisibleTodos(state.visibilityFilter, state.todos)
-  }
-}
+const mapStateToProps = state => ({
+  todos: getVisibleTodos(state.visibilityFilter, state.todos)
+})
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onTodoClick: id => {
-      dispatch( toggleTodo(id) )
-    }
+const mapDispatchToProps = dispatch => ({
+  onTodoClick: id => {
+    dispatch( toggleTodo(id) )
   }
-}
+})
 
 const VisibleTodoList = connect(
   mapStateToProps,

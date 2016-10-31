@@ -1,23 +1,20 @@
-export const setVisibilityFilter = filter => {
-  return {
-    type: 'SET_VISIBILITY_FILTER'
-    , filter
+export const setVisibilityFilter = filter => (
+  { type: 'SET_VISIBILITY_FILTER'
+  , filter
   }
-}
+)
 
-let id = 0
+var id = 0
 
-export const addTodo = text => {
-  return {
-    type: 'ADD_TODO',
-    id: id++,
-    text
+export const addTodo = text => (
+  { type: 'ADD_TODO'
+  , id: id++
+  , text
   }
-}
+)
 
-export const toggleTodo = id => {
-  return {
-  type: 'TOGGLE_TODO'
+export const toggleTodo = id => (
+  { type: 'TOGGLE_TODO'
   , id
   }
-}
+)
