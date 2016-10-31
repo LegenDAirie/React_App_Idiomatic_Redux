@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 let id = 0
 
-let AddTodo = dispatch => {
+let AddTodo = ({ dispatch }) => {
 
   let input
 
