@@ -1,8 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 let id = 0
 
-const AddTodo = (props, { store }) => {
+let AddTodo = dispatch => {
 
   let input
 
@@ -14,7 +15,7 @@ const AddTodo = (props, { store }) => {
       />
 
       <button onClick={ () => {
-        store.dispatch(
+        dispatch(
           { type: 'ADD_TODO'
           , text: input.value
           , id: id++
@@ -28,8 +29,16 @@ const AddTodo = (props, { store }) => {
   )
 }
 
+// AddTodo = connect(
+//   mapStateToProps: state => ({}), // doesn't need props
+//   mapDispatchToProps: dispatch => ({ dispatch }) // only needs dispatch
+// )(AddTodo)
 
-AddTodo.contextTypes = {
-  store: React.PropTypes.object
-}
+// AddTodo = connect(
+//   null, // Null tells connect there is no ned to subscribe to the store
+//   null // just passing dispatch is common, passing null auto passes dispatch as prop
+// )(AddTodo)
+
+AddTodo = connect()(AddTodo) // if only dispatch is needed pass in nothing
+
 export default AddTodo
