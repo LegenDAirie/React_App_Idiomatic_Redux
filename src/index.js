@@ -4,6 +4,22 @@ import App from './App'
 import { createStore } from 'redux'
 import todoAppReducer from './stateManagement/reducers/todoApp'
 import { Provider } from 'react-redux'
+import { loadState, saveState } from './localStorage'
+
+const persistedState = loadState()
+
+const store = createStore(todoAppReducer, persistedState)
+
+store.subscribe( () => {
+  saveState(store.getState())
+})
+
+ReactDOM.render(
+  <Provider store={ store }>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
 
 // const Provider = React.createClass({
 //
@@ -21,19 +37,3 @@ import { Provider } from 'react-redux'
 // Provider.childContextTypes = {
 //   store: React.PropTypes.object
 // }
-
-const persistedState = {
-  todos: [
-    { text: 'Welcome Back!'
-    , id: -1
-    , completed: false
-    }
-  ]
-}
-
-ReactDOM.render(
-  <Provider store={ createStore(todoAppReducer, persistedState) }>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-)
