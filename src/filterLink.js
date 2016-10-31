@@ -1,5 +1,4 @@
 import React from 'react'
-import store from './store'
 
 const Link = ({ active, children, onClick }) => {
 
@@ -22,6 +21,7 @@ const Link = ({ active, children, onClick }) => {
 const FilterLink = React.createClass({
 
   componentDidMount () {
+    const { store } = this.props
     this.unsubscribe = store.subscribe( () => {
       this.forceUpdate()
     })
@@ -33,6 +33,7 @@ const FilterLink = React.createClass({
 
   render () {
     const props = this.props
+    const { store } = props
     const state = store.getState()
 
     return (

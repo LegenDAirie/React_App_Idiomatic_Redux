@@ -1,9 +1,8 @@
 import React from 'react'
-import store from './store'
 
 let id = 0
 
-const AddTodo = () => {
+const AddTodo = ({ store }) => {
 
   let input
 

@@ -3,11 +3,11 @@ import VisibleTodoList from './TodoList'
 import AddTodo from './AddTodo'
 import Footer from './Footer'
 
-const App = () => (
+const App = ({ store }) => (
   <div>
-    <AddTodo/>
-    <VisibleTodoList />
-    <Footer />
+    <AddTodo store={ store } />
+    <VisibleTodoList store={ store } />
+    <Footer store={ store } />
   </div>
 )
 

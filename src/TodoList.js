@@ -1,6 +1,5 @@
 import React from 'react'
 import Todo from './Todo'
-import store from './store'
 
 
 const getVisibleTodos = (visibilityFilter, todos) => {
@@ -36,6 +35,7 @@ const TodoList = ({ todos, onTodoClick }) => (
 const VisibleTodoList = React.createClass({
 
   componentDidMount () {
+    const { store } = this.props
     this.unsubscribe = store.subscribe( () => {
       this.forceUpdate()
     })
@@ -46,6 +46,7 @@ const VisibleTodoList = React.createClass({
   },
 
   render () {
+    const { store } = this.props
     const state = store.getState()
 
     return (
