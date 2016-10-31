@@ -11,7 +11,10 @@ const persistedState = loadState()
 const store = createStore(todoAppReducer, persistedState)
 
 store.subscribe( () => {
-  saveState(store.getState())
+  saveState(
+    { todos: store.getState().todos
+    }
+  )
 })
 
 ReactDOM.render(
