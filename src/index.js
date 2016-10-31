@@ -22,8 +22,17 @@ import { Provider } from 'react-redux'
 //   store: React.PropTypes.object
 // }
 
+const persistedState = {
+  todos: [
+    { text: 'Welcome Back!'
+    , id: -1
+    , completed: false
+    }
+  ]
+}
+
 ReactDOM.render(
-  <Provider store={ createStore(todoAppReducer) }>
+  <Provider store={ createStore(todoAppReducer, persistedState) }>
     <App />
   </Provider>,
   document.getElementById('root')
