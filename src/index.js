@@ -22,7 +22,7 @@ Provider.childContextTypes = {
 }
 
 ReactDOM.render(
-  <Provider store={ createStore(todoAppReducer) } >
+  <Provider store={ createStore(todoAppReducer) }>
     <App />
   </Provider>,
   document.getElementById('root')

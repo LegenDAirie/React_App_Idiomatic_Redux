@@ -35,7 +35,7 @@ const TodoList = ({ todos, onTodoClick }) => (
 const VisibleTodoList = React.createClass({
 
   componentDidMount () {
-    const { store } = this.props
+    const { store } = this.context
     this.unsubscribe = store.subscribe( () => {
       this.forceUpdate()
     })
@@ -46,7 +46,7 @@ const VisibleTodoList = React.createClass({
   },
 
   render () {
-    const { store } = this.props
+    const { store } = this.context
     const state = store.getState()
 
     return (
@@ -65,5 +65,9 @@ const VisibleTodoList = React.createClass({
     )
   }
 })
+
+VisibleTodoList.contextTypes = {
+  store: React.PropTypes.object
+}
 
 export default VisibleTodoList

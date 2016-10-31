@@ -21,7 +21,7 @@ const Link = ({ active, children, onClick }) => {
 const FilterLink = React.createClass({
 
   componentDidMount () {
-    const { store } = this.props
+    const { store } = this.context
     this.unsubscribe = store.subscribe( () => {
       this.forceUpdate()
     })
@@ -33,7 +33,7 @@ const FilterLink = React.createClass({
 
   render () {
     const props = this.props
-    const { store } = props
+    const { store } = this.context
     const state = store.getState()
 
     return (
@@ -55,5 +55,8 @@ const FilterLink = React.createClass({
   }
 })
 
+FilterLink.contextTypes = {
+  store: React.PropTypes.object
+}
 
 export default FilterLink

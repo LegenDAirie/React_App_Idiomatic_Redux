@@ -2,7 +2,7 @@ import React from 'react'
 
 let id = 0
 
-const AddTodo = ({ store }) => {
+const AddTodo = (props, { store }) => {
 
   let input
 
@@ -28,4 +28,8 @@ const AddTodo = ({ store }) => {
   )
 }
 
+
+AddTodo.contextTypes = {
+  store: React.PropTypes.object
+}
 export default AddTodo
