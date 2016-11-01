@@ -6,13 +6,13 @@ import { toggleTodo } from './actionCreators'
 
 const getVisibleTodos = (visibilityFilter, todos) => {
   switch (visibilityFilter) {
-    case 'SHOW_ALL':
+    case 'all':
       return todos
 
-    case 'ACTIVE':
+    case 'active':
       return todos.filter( todo => !todo.completed)
 
-    case 'COMPLETED':
+    case 'completed':
       return todos.filter( todo => todo.completed)
 
     default:
@@ -34,11 +34,11 @@ const TodoList = ({ todos, onTodoClick }) => (
   </ul>
 )
 
-const mapStateToProps = state => ({
-  todos: getVisibleTodos(state.visibilityFilter, state.todos)
+const mapStateToProps = (state, ownProps) => ({
+  todos: getVisibleTodos(ownProps.filter, state.todos)
 })
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   onTodoClick: id => {
     dispatch( toggleTodo(id) )
   }

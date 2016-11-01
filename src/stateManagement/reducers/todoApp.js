@@ -1,5 +1,4 @@
 import todos from './todos'
-import visibilityFilter from './setVisibilityFilter'
 
 // import { combineReducers } from 'redux'
 const combineReducers = reducers => {
@@ -21,8 +20,7 @@ const combineReducers = reducers => {
 //   }
 // }
 const todoApp = combineReducers({
-  todos,
-  visibilityFilter
+  todos
 })
 
 
