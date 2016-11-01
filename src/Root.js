@@ -6,7 +6,7 @@ import { Router, Route, browserHistory } from 'react-router'
 const Root = ({ store }) => (
   <Provider store={ store }>
     <Router history={ browserHistory } >
-      <Router path='/' component={ App } />
+      <Route path='/' component={ App } />
     </Router>
   </Provider>
 )
