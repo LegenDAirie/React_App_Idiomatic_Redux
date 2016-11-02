@@ -1,4 +1,4 @@
-import todos from './todos'
+import todos, * as fromTodos from './todos'
 
 // import { combineReducers } from 'redux'
 const combineReducers = reducers => {
@@ -25,3 +25,7 @@ const todoApp = combineReducers({
 
 
 export default todoApp
+
+export const getVisibleTodos = (state, filter) => (
+  fromTodos.getVisibleTodos(state.todos, filter)
+)
