@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { toggleTodo } from './actionCreators'
 import { withRouter } from 'react-router'
 import { getVisibleTodos } from './stateManagement/reducers/todoApp'
+import { fetchTodos } from './fakeApi'
 
 const TodoList = ({ todos, onTodoClick }) => (
   <ul>
@@ -17,9 +18,33 @@ const TodoList = ({ todos, onTodoClick }) => (
   </ul>
 )
 
-const mapStateToProps = (state, { params }) => ({
-  todos: getVisibleTodos(state, params.filter || 'all')
+let VisibleTodoList = React.createClass({
+
+  componentDidMount () {
+    fetchTodos(this.props.filter).then( todos => {
+      console.log(todos)
+    })
+  },
+
+  componentDidUpdate () {
+    fetchTodos(this.props.filter).then( todos => {
+      console.log(todos)
+    })
+  },
+
+  render () {
+    return <TodoList { ...this.props } />
+  }
 })
+
+const mapStateToProps = (state, { params }) => {
+  const filter = params.filter || 'all'
+
+  return {
+    todos: getVisibleTodos(state, filter),
+    filter
+  }
+}
 
 // const mapDispatchToProps = (dispatch) => ({
 //   onTodoClick: id => {
@@ -27,11 +52,11 @@ const mapStateToProps = (state, { params }) => ({
 //   }
 // })
 
-const VisibleTodoList = withRouter( connect(
+VisibleTodoList = withRouter( connect(
   mapStateToProps,
   { onTodoClick: toggleTodo }
   // mapDispatchToProps
-)(TodoList) )
+)(VisibleTodoList) )
 
 // const VisibleTodoList = React.createClass({
 //
