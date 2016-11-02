@@ -1,34 +1,52 @@
 import todoReducer from './todo'
+import { combineReducers } from 'redux'
 
-const todos = (state = [], action) => {
+const byID = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_TODO':
-      return [
-        ...state,
-        todoReducer(undefined, action)
-      ]
-
     case 'TOGGLE_TODO':
-      return state.map( todo => todoReducer(todo, action))
+      return {
+        ...state,
+        [action.id]: todoReducer(state[action.id], action)
+      }
 
     default:
       return state
   }
 }
 
+const allIDs = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [
+        ...state,
+        action.id
+      ]
+
+    default:
+      return state
+  }
+}
+
+const todos = combineReducers({ byID, allIDs })
+
 export default todos
 
 
+const getAllTodos = (state) =>
+  state.allIDs.map( id => state.byID[id])
+
 export const getVisibleTodos = (state, visibilityFilter) => {
+  const allTodos = getAllTodos(state)
   switch (visibilityFilter) {
     case 'all':
-      return state
+      return allTodos
 
     case 'active':
-      return state.filter( todo => !todo.completed)
+      return allTodos.filter( todo => !todo.completed)
 
     case 'completed':
-      return state.filter( todo => todo.completed)
+      return allTodos.filter( todo => todo.completed)
 
     default:
       return state
