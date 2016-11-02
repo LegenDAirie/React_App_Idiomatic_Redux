@@ -26,10 +26,12 @@ let VisibleTodoList = React.createClass({
     })
   },
 
-  componentDidUpdate () {
-    fetchTodos(this.props.filter).then( todos => {
-      console.log(todos)
-    })
+  componentDidUpdate (prevProps) {
+    if (prevProps !== this.props) {
+      fetchTodos(this.props.filter).then( todos => {
+        console.log(todos)
+      })
+    }
   },
 
   render () {
