@@ -1,7 +1,7 @@
 import React from 'react'
 import Todo from './Todo'
 import { connect } from 'react-redux'
-import { toggleTodo, recieveTodos } from './actionCreators'
+import * as actions from './actionCreators'
 import { withRouter } from 'react-router'
 import { getVisibleTodos } from './stateManagement/reducers/todoApp'
 import { fetchTodos } from './fakeApi'
@@ -39,7 +39,13 @@ let VisibleTodoList = React.createClass({
   },
 
   render () {
-    return <TodoList { ...this.props } />
+    const { toggleTodo, ...rest } = this.props
+    return (
+      <TodoList
+        { ...rest }
+        onTodoClick={ toggleTodo }
+      />
+    )
   }
 })
 
@@ -60,7 +66,7 @@ const mapStateToProps = (state, { params }) => {
 
 VisibleTodoList = withRouter( connect(
   mapStateToProps,
-  { onTodoClick: toggleTodo, recieveTodos }
+  actions
   // mapDispatchToProps
 )(VisibleTodoList) )
 
