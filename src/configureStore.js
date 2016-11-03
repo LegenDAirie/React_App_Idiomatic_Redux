@@ -37,9 +37,27 @@ const configureStore = () => {
     }
   }
 
+  const AddPromiseHandlingToRedux = (store) => {
+    const rawDispatch = store.dispatch
+
+    const newDispatch = (action) => {
+
+      if (typeof action.then === 'function') {
+        return action.then(rawDispatch)
+      }
+
+      return rawDispatch(action)
+    }
+
+
+    return newDispatch
+  }
+
   if (process.env.NODE_ENV !== 'production') {
     store.dispatch = logDispatch(store)
   }
+  
+  store.dispatch = AddPromiseHandlingToRedux(store)
 
   return store
 }

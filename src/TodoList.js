@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import * as actions from './actionCreators'
 import { withRouter } from 'react-router'
 import { getVisibleTodos } from './stateManagement/reducers/todoApp'
-import { fetchTodos } from './fakeApi'
 
 const TodoList = ({ todos, onTodoClick }) => (
   <ul>
@@ -31,11 +30,9 @@ let VisibleTodoList = React.createClass({
   },
 
   updateTodos () {
-    const { filter, recieveTodos } = this.props
+    const { filter, fetchTodos } = this.props
 
-    fetchTodos(filter).then( todos => {
-      recieveTodos(filter, todos)
-    })
+    fetchTodos(filter)
   },
 
   render () {
