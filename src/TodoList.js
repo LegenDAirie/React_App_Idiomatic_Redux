@@ -26,7 +26,7 @@ let VisibleTodoList = React.createClass({
 
   componentDidUpdate (prevProps) {
     if (prevProps.filter !== this.props.filter) {
-      // this.updateTodos()
+      this.updateTodos()
     }
   },
 
