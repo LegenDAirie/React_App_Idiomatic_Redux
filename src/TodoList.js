@@ -21,17 +21,19 @@ const TodoList = ({ todos, onTodoClick }) => (
 let VisibleTodoList = React.createClass({
 
   componentDidMount () {
-    fetchTodos(this.props.filter).then( todos => {
-      console.log(todos)
-    })
+    this.updateTodos()
   },
 
   componentDidUpdate (prevProps) {
     if (prevProps !== this.props) {
-      fetchTodos(this.props.filter).then( todos => {
-        console.log(todos)
-      })
+      this.updateTodos()
     }
+  },
+
+  updateTodos () {
+    fetchTodos(this.props.filter).then( todos => {
+      console.log(todos)
+    })
   },
 
   render () {
