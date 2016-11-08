@@ -3,14 +3,43 @@ import { createStore } from 'redux'
 // import throttle from 'lodash/throttle'
 import todoAppReducer from './stateManagement/reducers/todoApp'
 
+const promiseMiddleWare = (store) => (next) => (action) => {
+
+  if (typeof action.then === 'function') {
+    return action.then(next)
+  }
+
+  return next(action)
+}
+
+const logger = (store) => (next) => {
+  if (!console.group) {
+    return next
+  }
+
+  return (action) => {
+    console.group(action.type)
+    console.log('%c Old State: ', "color: grey", store.getState())
+    console.log('%c Action: ', 'color: blue', action)
+    const returnValue = next(action)
+    console.log('%c New State: ', 'color: green', store.getState())
+    console.groupEnd(action.type)
+
+    return returnValue
+  }
+}
+
+const wrapDispatchWithMiddleWares = (store, middleWares) => {
+  middleWares.slice().reverse().forEach( middleWare => {
+    store.dispatch = middleWare(store)(store.dispatch)
+  })
+}
+
 const configureStore = () => {
-
   // const persistedState = loadState()
-
   // const store = createStore(todoAppReducer, persistedState)
-
   const store = createStore(todoAppReducer)
-
+  const middleWares = [promiseMiddleWare]
   // store.subscribe( throttle( () => {
   //   saveState(
   //     { todos: store.getState().todos
@@ -18,46 +47,11 @@ const configureStore = () => {
   //   )
   // }, 1000))
 
-  const logDispatch = (store) => {
-    const rawDispatch = store.dispatch
-
-    if (!console.group) {
-      return rawDispatch
-    }
-
-    return (action) => {
-      console.group(action.type)
-      console.log('%c Old State: ', "color: grey", store.getState())
-      console.log('%c Action: ', 'color: blue', action)
-      const returnValue = rawDispatch(action)
-      console.log('%c New State: ', 'color: green', store.getState())
-      console.groupEnd(action.type)
-
-      return returnValue
-    }
-  }
-
-  const AddPromiseHandlingToRedux = (store) => {
-    const rawDispatch = store.dispatch
-
-    const newDispatch = (action) => {
-
-      if (typeof action.then === 'function') {
-        return action.then(rawDispatch)
-      }
-
-      return rawDispatch(action)
-    }
-
-
-    return newDispatch
-  }
-
   if (process.env.NODE_ENV !== 'production') {
-    store.dispatch = logDispatch(store)
+    middleWares.push(logger)
   }
-  
-  store.dispatch = AddPromiseHandlingToRedux(store)
+
+  wrapDispatchWithMiddleWares(store, middleWares)
 
   return store
 }
